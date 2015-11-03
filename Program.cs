@@ -11,16 +11,20 @@ namespace KukkaMove
     class Program
     {
         private static CartesianPosition VectorToFollow = new CartesianPosition();
+        private static double valeurX;
+        private static double valeurY;
+        private static double valeurZ;
 
         static void Main(string[] args)
         {
             ConsoleKeyInfo cki = new ConsoleKeyInfo();
             Console.TreatControlCAsInput = true;
-            RobotController Robot = new RobotController();
-            Robot.Connect("192.168.1.1");
-            Console.WriteLine("Robot connecté en position : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
+            //RobotController Robot = new RobotController();
+            //Robot.Connect("192.168.1.1");
+            //Console.WriteLine("Robot connecté en position : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
 
-
+            Device Mouse = new Device();
+            Mouse.Connect();
 
             /*List<CartesianPosition> Trajectoire = new List<CartesianPosition>();
             for (int i = 1; i <= 100; i++)
@@ -54,16 +58,16 @@ namespace KukkaMove
             System.Threading.Thread.Sleep(2000);
             Robot.StopRelativeMovement();
 
-            Device Mouse = new Device();*/
+            */
             int TestMode;
             TestMode = 1;
 
             Console.WriteLine("Press the Escape (Esc) key to quit: \n");
 
-            do
+            if (TestMode == 1)
             {
-                if (TestMode == 1)
-                    {
+                do
+                {
                         cki = Console.ReadKey();
                         VectorToFollow.X = VectorToFollow.Y = VectorToFollow.Z = VectorToFollow.A = VectorToFollow.B = VectorToFollow.C = 0;
                         if (cki.Key.ToString() == "UpArrow")
@@ -100,18 +104,38 @@ namespace KukkaMove
                             Console.WriteLine("Sub");
                             VectorToFollow.Z = -1;
                         }
-                        else
-                        {
-                            Console.WriteLine(", Not Allowed");
-                        }
 
-                        Robot.StartRelativeMovement();
+                        /*Robot.StartRelativeMovement();
                         Robot.SetRelativeMovement(VectorToFollow);
                         System.Threading.Thread.Sleep(1000);
-                        Robot.StopRelativeMovement();
+                        Robot.StopRelativeMovement();*/
 
-                    }
                 } while (cki.Key != ConsoleKey.Escape);
+            }
+            else
+            {
+                //Robot.StartRelativeMovement();
+                do
+                {
+                    var translation = Mouse.Sensor.Translation;
+                    var rotation = Mouse.Sensor.Rotation;
+
+                    /* Affichage des translations et des rotations */
+
+                    valeurX = translation.X / 2353;
+                    valeurZ = translation.Y / 2702;
+                    valeurY = translation.Z / 2648;
+
+                    VectorToFollow.X = valeurX;
+                    VectorToFollow.Y = valeurY;
+                    VectorToFollow.Z = valeurZ;
+                    Console.WriteLine("Translation: " + valeurX + " : " + valeurY + " : " + valeurZ);
+
+                    System.Threading.Thread.Sleep(500);
+                    // Robot.SetRelativeMovement(VectorToFollow);
+                } while (cki.Key != ConsoleKey.Escape);
+                //Robot.StopRelativeMovement();
+            }
 
         }
     }
