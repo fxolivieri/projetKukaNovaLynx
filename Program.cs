@@ -11,23 +11,27 @@ namespace KukkaMove
     class Program
     {
         private static CartesianPosition VectorToFollow = new CartesianPosition();
-        private static double valeurX;
-        private static double valeurY;
-        private static double valeurZ;
+        private static double translateX;
+        private static double translateY;
+        private static double translateZ;
+        private static double rotateX;
+        private static double rotateY;
+        private static double rotateZ;
+        private static List<CartesianPosition> Trajectoire;
 
         static void Main(string[] args)
         {
             ConsoleKeyInfo cki = new ConsoleKeyInfo();
             Console.TreatControlCAsInput = true;
-            //RobotController Robot = new RobotController();
-            //Robot.Connect("192.168.1.1");
-            //Console.WriteLine("Robot connecté en position : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
+            RobotController Robot = new RobotController();
+            Robot.Connect("192.168.1.1");
+            Console.WriteLine("Robot connecté en position : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
 
             Device Mouse = new Device();
             Mouse.Connect();
+            Trajectoire = new List<CartesianPosition>();
 
-            /*List<CartesianPosition> Trajectoire = new List<CartesianPosition>();
-            for (int i = 1; i <= 100; i++)
+            /*for (int i = 1; i <= 100; i++)
             {
 
                 Trajectoire.Add(new CartesianPosition
@@ -60,7 +64,7 @@ namespace KukkaMove
 
             */
             int TestMode;
-            TestMode = 1;
+            TestMode = 0;
 
             Console.WriteLine("Press the Escape (Esc) key to quit: \n");
 
@@ -114,29 +118,86 @@ namespace KukkaMove
             }
             else
             {
-                //Robot.StartRelativeMovement();
+                Robot.StartRelativeMovement();
                 do
                 {
+                    VectorToFollow.X = VectorToFollow.Y = VectorToFollow.Z = VectorToFollow.A = VectorToFollow.B = VectorToFollow.C = 0;
                     var translation = Mouse.Sensor.Translation;
                     var rotation = Mouse.Sensor.Rotation;
 
                     /* Affichage des translations et des rotations */
 
-                    valeurX = translation.X / 2353;
-                    valeurZ = translation.Y / 2702;
-                    valeurY = translation.Z / 2648;
+                    translateX = translation.X / 2353;
+                    translateZ = translation.Y / 2702;
+                    translateY = translation.Z / 2648;
 
-                    VectorToFollow.X = valeurX;
-                    VectorToFollow.Y = valeurY;
-                    VectorToFollow.Z = valeurZ;
-                    Console.WriteLine("Translation: " + valeurX + " : " + valeurY + " : " + valeurZ);
+                    rotateX = rotation.X;
+                    rotateZ = rotation.Y;
+                    rotateY = rotation.Z;
 
-                    System.Threading.Thread.Sleep(500);
-                    // Robot.SetRelativeMovement(VectorToFollow);
+                    VectorToFollow.X = translateX;
+                    VectorToFollow.Y = translateY;
+                    VectorToFollow.Z = translateZ;
+                    //Console.WriteLine("Translation: " + translateX + " : " + translateY + " : " + translateZ + " Rotation: " + rotateX + " : " + rotateY + " : " + rotateZ);
+
+
+                    if (Console.KeyAvailable)
+                    {
+                        ConsoleKeyInfo key = Console.ReadKey(true);
+                        switch (key.Key)
+                        {
+                            case ConsoleKey.A:
+                                if (Trajectoire.Count() <= 3)
+                                {
+                                    Console.WriteLine("Point enregistré : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
+                                    Trajectoire.Add(new CartesianPosition
+                                    {
+                                        X = Robot.GetCurrentPosition().X,
+                                        Y = Robot.GetCurrentPosition().Y,
+                                        Z = Robot.GetCurrentPosition().Z,
+                                        A = Robot.GetCurrentPosition().A,
+                                        B = Robot.GetCurrentPosition().B,
+                                        C = Robot.GetCurrentPosition().C
+
+                                    });
+                                }
+                                break;
+                            case ConsoleKey.Z:
+                                if (Trajectoire.Count() == 4)
+                                {
+                                    Console.WriteLine("Go");
+                                }
+                                break;
+                            case ConsoleKey.E:
+                                Console.WriteLine("E");
+                                break;
+                            case ConsoleKey.R:
+                                Console.WriteLine("R");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    System.Threading.Thread.Sleep(100);
+                     Robot.SetRelativeMovement(VectorToFollow);
                 } while (cki.Key != ConsoleKey.Escape);
-                //Robot.StopRelativeMovement();
+                Robot.StopRelativeMovement();
             }
 
+        }
+        public static void parcoursPlateau(int nbPointX, int nbPointY, double ecartX, double ecartY)
+        {
+            int nbPointTotal = 0;
+
+            for (int i = 0; i < nbPointY; i++)
+            {
+                for (int j = 0; j < nbPointX; j++)
+                {
+                    nbPointTotal++;
+                    Console.WriteLine("Point numéro: " + nbPointTotal + " --> " + (j * ecartX) + "; " + (i * ecartY));
+
+                }
+            }
         }
     }
 }
