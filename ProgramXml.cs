@@ -45,14 +45,16 @@ namespace xmlTest
                         {
                             case 0:
                             {
-                                //Doner valeurs a X Y Z; apres on metra get.currentPosition...
-   /*                           System.Console.WriteLine("Ecrivez la valeur de X");
+  
+   /*                          //Doner valeurs a X Y Z; apres on metra get.currentPosition...
+                                System.Console.WriteLine("Ecrivez la valeur de X");
                                 valeurX = (Console.ReadLine());
                                 System.Console.WriteLine("Ecrivez la valeur de Y");
                                 valeurY = (Console.ReadLine());
                                 System.Console.WriteLine("Ecrivez la valeur de Z");
                                 valeurZ = (Console.ReadLine());
    */
+        //
                                 valeurX = Robot.GetCurrentPosition().X.ToString();
                                 valeurY = Robot.GetCurrentPosition().Y.ToString();
                                 valeurZ = Robot.GetCurrentPosition().Z.ToString();
@@ -61,7 +63,7 @@ namespace xmlTest
                                 valeurC = Robot.GetCurrentPosition().C.ToString();
                                 valeurDetection = Robot.ReadSensor().ToString();
                                 valeurPince = Robot.IsGripperOpen().ToString();
-                          
+         //*/                 
                                 // Create and add another product node---------------------------Creation nouveau position
                                 XmlNode PositonNode = doc.CreateElement("Position");
                                 XmlAttribute postitionAttribute = doc.CreateAttribute("id");
@@ -118,7 +120,7 @@ namespace xmlTest
             }
 
             doc.Save(Console.Out);
-            doc.Save("kukaAgilus.xml");
+            doc.Save(@"C:\Users\Jordi\Desktop\novaLynx\jordi\XML\xmlTestJordi4\kukaAgilus.xml");
             System.Console.ReadLine();
         }
     }
