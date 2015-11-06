@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Coordonees_Robot>
+  <Position id="00">
+    <X>0</X>
+    <Y>0</Y>
+    <Z>0</Z>
+    <A>0</A>
+    <B>0</B>
+    <C>0</C>
+    <Pince>0</Pince>
+    <Detection>0</Detection>
+  </Position>
+  <Position id="1">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>205,624115</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="2">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>248,023117</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="3">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>248,023117</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="4">
+    <X>849,435486</X>
+    <Y>-148,735809</Y>
+    <Z>342,946472</Z>
+    <A>113,370659</A>
+    <B>-8,55969429</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="5">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>356,644073</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="6">
+    <X>849,435242</X>
+    <Y>-148,735748</Y>
+    <Z>383,851196</Z>
+    <A>113,370667</A>
+    <B>-8,55970192</B>
+    <C>97,1723557</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="7">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>413,965302</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="8">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>413,965302</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="9">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>414,308594</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="10">
+    <X>849,434814</X>
+    <Y>-148,735687</Y>
+    <Z>425,598541</Z>
+    <A>113,370613</A>
+    <B>-8,55967522</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="11">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>427,573303</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="12">
+    <X>849,434631</X>
+    <Y>-148,735687</Y>
+    <Z>427,573303</Z>
+    <A>113,370605</A>
+    <B>-8,55967331</B>
+    <C>97,172348</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="13">
+    <X>835,624146</X>
+    <Y>-148,736099</Y>
+    <Z>476,151703</Z>
+    <A>113,369362</A>
+    <B>-8,55918884</B>
+    <C>97,1722412</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="14">
+    <X>830,244507</X>
+    <Y>-148,73587</Y>
+    <Z>476,151642</Z>
+    <A>113,369331</A>
+    <B>-8,55918312</B>
+    <C>97,1722336</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="15">
+    <X>830,244507</X>
+    <Y>-148,73587</Y>
+    <Z>476,151642</Z>
+    <A>113,369331</A>
+    <B>-8,55918312</B>
+    <C>97,1722336</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="16">
+    <X>830,225769</X>
+    <Y>-148,73587</Y>
+    <Z>476,151642</Z>
+    <A>113,369331</A>
+    <B>-8,55918312</B>
+    <C>97,1722336</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="17">
+    <X>826,954712</X>
+    <Y>-148,735916</Y>
+    <Z>476,151672</Z>
+    <A>113,369339</A>
+    <B>-8,55918503</B>
+    <C>97,1722336</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="18">
+    <X>811,692566</X>
+    <Y>-148,736252</Y>
+    <Z>476,151733</Z>
+    <A>113,36937</A>
+    <B>-8,55919</B>
+    <C>97,1722641</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="19">
+    <X>737,131897</X>
+    <Y>-148,739304</Y>
+    <Z>476,152039</Z>
+    <A>113,369377</A>
+    <B>-8,55917454</B>
+    <C>97,1722946</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="20">
+    <X>668,895813</X>
+    <Y>-148,701035</Y>
+    <Z>476,145142</Z>
+    <A>113,368629</A>
+    <B>-8,5598135</B>
+    <C>97,1707916</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+  <Position id="21">
+    <X>661,006287</X>
+    <Y>-148,620911</Y>
+    <Z>476,145142</Z>
+    <A>113,368629</A>
+    <B>-8,55981445</B>
+    <C>97,1707916</C>
+    <Pince>False</Pince>
+    <Detection>True</Detection>
+  </Position>
+</Coordonees_Robot>
