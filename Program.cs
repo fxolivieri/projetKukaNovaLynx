@@ -26,14 +26,16 @@ namespace KukkaMove
             Console.TreatControlCAsInput = true;
             RobotController Robot = new RobotController();
 
-            Robot.Connect("192.168.1.1");
-            Console.WriteLine("Robot connecté en position : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
-
             Device Mouse = new Device();
             Mouse.Connect();
+
+            ProgramXML xmlProg = new ProgramXML();
+
             Trajectoire = new List<CartesianPosition>();
 
-
+            Robot.Connect("192.168.1.1");
+            Console.WriteLine("Robot connecté en position : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
+            
             List<CartesianPosition> trajectoryToAdd = new List<CartesianPosition>();
             trajectoryToAdd.Add(new CartesianPosition
             {
@@ -70,6 +72,9 @@ namespace KukkaMove
             {
                 Console.WriteLine("Predefined mode go");
                 trajectoryToAdd.Clear();
+
+                //trajectoryToAdd = xmlProg.readXml();
+
                 if (!Robot.IsGripperOpen()) Robot.OpenGripper();
                 trajectoryToAdd.Add(new CartesianPosition
                 {
