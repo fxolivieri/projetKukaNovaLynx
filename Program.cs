@@ -17,9 +17,12 @@ namespace KukkaMove
         private static double rotateX;
         private static double rotateY;
         private static double rotateZ;
+        private static int closeGripper;
         private static List<CartesianPosition> Trajectoire;
+        private static List<CartesianPosition> BeginningPoint;
+        private static List<CartesianPosition> PointToGo;
         private static ConsoleKeyInfo key;
-        private static int whichTrajectory = 0;
+        private static List<CartesianPosition> TrajectoriesList = new List<CartesianPosition>();
 
         static void Main(string[] args)
         {
@@ -32,10 +35,15 @@ namespace KukkaMove
             ProgramXML xmlProg = new ProgramXML();
 
             Trajectoire = new List<CartesianPosition>();
+            BeginningPoint = new List<CartesianPosition>();
+            PointToGo = new List<CartesianPosition>();
+
+            int whichTrajectory = 0;
+            closeGripper = 0;
 
             Robot.Connect("192.168.1.1");
             Console.WriteLine("Robot connecté en position : x:" + Robot.GetCurrentPosition().X + "; y:" + Robot.GetCurrentPosition().Y + "; z: " + Robot.GetCurrentPosition().Z);
-            
+
             List<CartesianPosition> trajectoryToAdd = new List<CartesianPosition>();
             trajectoryToAdd.Add(new CartesianPosition
             {
@@ -73,64 +81,51 @@ namespace KukkaMove
                 Console.WriteLine("Predefined mode go");
                 trajectoryToAdd.Clear();
 
-                //trajectoryToAdd = xmlProg.readXml();
+                trajectoryToAdd = xmlProg.readXml("C:/Users/Brice-PC/Desktop/kukaAgilus.xml");
+                TrajectoriesList = creationPlateau(trajectoryToAdd, 4, 4);
 
-                if (!Robot.IsGripperOpen()) Robot.OpenGripper();
-                trajectoryToAdd.Add(new CartesianPosition
+                for (int i=0; i< TrajectoriesList.Count(); i++)
                 {
-                    X = 513.64,
-                    Y = 133.94,
-                    Z = 219.75,
-                    A = -69.23,
-                    B = 86.72,
-                    C = -165.68,
-                });
-                trajectoryToAdd.Add(new CartesianPosition
-                {
-                    X = 513.64,
-                    Y = 233.63,
-                    Z = 219.75,
-                    A = -69.23,
-                    B = 86.72,
-                    C = -165.68,
-                });
-                Robot.PlayTrajectory(trajectoryToAdd);
-                Robot.CloseGripper();
-                Robot.StartRelativeMovement();
-                Robot.SetRelativeMovement(new CartesianPosition
-                {
-                    X = 0,
-                    Y= 0,
-                    Z= 100
-                });
-                System.Threading.Thread.Sleep(100);
-                Robot.StopRelativeMovement();
-                trajectoryToAdd.Clear();
-                trajectoryToAdd.Add(new CartesianPosition
-                {
-                    X = 931.071228,
-                    Y = -256.094757,
-                    Z = 109.398872,
-                    A = -102.503265,
-                    B = -3.90594482,
-                    C = -86.1436691,
-                });
-                Robot.PlayTrajectory(trajectoryToAdd);
-                Robot.OpenGripper();
+                    if (closeGripper == 0)
+                    {
+                        Robot.CloseGripper();
+                        closeGripper++;
+                    }
+                    else if (closeGripper == 4)
+                    {
+                        Robot.OpenGripper();
+                        closeGripper = 0;
+                    }
+                    PointToGo.Clear();
+                    PointToGo.Add(TrajectoriesList[i]);
+                    Robot.PlayTrajectory(PointToGo);
+                    Console.WriteLine("Press ESC for stopping. \n");
+                    key = Console.ReadKey(true);
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.Escape:
+                            Console.WriteLine("Stop");
+                            System.Environment.Exit(0);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+
             }
             else if (teachMode == 1)
             {
                 Console.WriteLine("Press 1 to register point, 2 for enable translation, 3 for enable rotation and 4 for launch animation. Press ESC if you want to stop the program. \n");
                 int modeEnable = 0;
                 int programRunning = 1;
-                List<List<CartesianPosition>> TrajectoriesList = new List<List<CartesianPosition>>();
 
                 Robot.StartRelativeMovement();
                 while(programRunning != 0)
                 {
                     if (modeEnable == 3)
                     {
-                        Console.WriteLine("Press 1 to rebegin, press 2 to continue. \n");
+                        Console.WriteLine("Press 1 to rebegin, press 2 to continue and ESC for stopping. \n");
                         key = Console.ReadKey(true);
                         switch (key.Key)
                         {
@@ -145,6 +140,7 @@ namespace KukkaMove
                                 Console.WriteLine("Suivant");
                                 break;
                             case ConsoleKey.Escape:
+                                Console.WriteLine("Stop");
                                 programRunning = 0;
                                 break;
                         }
@@ -186,12 +182,11 @@ namespace KukkaMove
                                     {
                                         Console.WriteLine("\nGo");
                                         Robot.StopRelativeMovement();
+                                        BeginningPoint.Add(Trajectoire[0]);
                                         TrajectoriesList = creationPlateau(Trajectoire, 4, 4);
+                                        if (!Robot.IsGripperOpen()) Robot.OpenGripper();
+                                        Robot.PlayTrajectory(BeginningPoint);
                                         modeEnable = 3;
-                                        //if (!Robot.IsGripperOpen()) Robot.OpenGripper();
-
-                                        Robot.PlayTrajectory(TrajectoriesList[0]);
-                                        TrajectoriesList.RemoveAt(0);
                                     }
                                     break;
                                 case ConsoleKey.Escape:
@@ -238,14 +233,19 @@ namespace KukkaMove
                         }
                         else if (modeEnable == 3)
                         {
-                            if(whichTrajectory % 2 == 0){
+                            if (closeGripper == 0)
+                            {
                                 Robot.CloseGripper();
+                                closeGripper++;
                             }
-                                else
+                            else if (closeGripper == 4)
                             {
                                 Robot.OpenGripper();
+                                closeGripper = 0;
                             }
-                            Robot.PlayTrajectory(TrajectoriesList[whichTrajectory]);
+                            PointToGo.Clear();
+                            PointToGo.Add(TrajectoriesList[whichTrajectory]);
+                            Robot.PlayTrajectory(PointToGo);
                             whichTrajectory++;
                         }
 
@@ -255,18 +255,13 @@ namespace KukkaMove
             }
 
         }
-        public static List<List<CartesianPosition>> creationPlateau(List<CartesianPosition> list, int nbPointLongueur, int nbPointHauteur)
+        public static List<CartesianPosition> creationPlateau(List<CartesianPosition> list, int nbPointLongueur, int nbPointHauteur)
         {
             List<CartesianPosition> listPoints = new List<CartesianPosition>();
-            List<List<CartesianPosition>> TrajectoriesList = new List<List<CartesianPosition>>();
-            List<CartesianPosition> trajectoryToAdd = new List<CartesianPosition>();
             CartesianPosition leverRondin = new CartesianPosition();
             CartesianPosition lacherRondin = new CartesianPosition();
 
-            // Ajout du point où se trouve les rondins
-            listPoints.Add(list[0]);
-            trajectoryToAdd.Add(list[0]);
-            TrajectoriesList.Add(trajectoryToAdd);
+            // Ajout du point où se trouve les rondins*
 
 
             // Déterminer tes 16 points
@@ -306,7 +301,7 @@ namespace KukkaMove
                     });
                     double X = -((distY * i * Math.Cos(Angle)) + (distX * j * Math.Sin(Angle))) / 3 + point1_X;
                     double Y = ((distX * j * Math.Cos(Angle)) - (distY * i * Math.Sin(Angle))) / 3 + point1_Y;
-                    //Console.WriteLine(X + " ; " + Y + " ; " + point1_Z + " ; " + point1_A + " ; " + point1_B + " ; "+ point1_C);
+                    Console.WriteLine(X + " ; " + Y + " ; " + point1_Z + " ; " + point1_A + " ; " + point1_B + " ; "+ point1_C);
                 }
             }
             leverRondin.X = list[0].X;
@@ -317,28 +312,21 @@ namespace KukkaMove
             leverRondin.C = list[0].C;
             Console.WriteLine("\n");
 
-            for (int currentTrajectory = 1; currentTrajectory < trajectoryToAdd.Count(); currentTrajectory++)
+            for (int currentTrajectory = 0; currentTrajectory < listPoints.Count(); currentTrajectory++)
             {
                 lacherRondin = listPoints[currentTrajectory];
                 lacherRondin.Z = 125.0;
 
                 //Aller
-                trajectoryToAdd.Clear();
 
-                trajectoryToAdd.Add(leverRondin);
-                trajectoryToAdd.Add(listPoints[currentTrajectory]);
-                trajectoryToAdd.Add(lacherRondin);
+                TrajectoriesList.Add(leverRondin);
+                TrajectoriesList.Add(listPoints[currentTrajectory]);
+                TrajectoriesList.Add(lacherRondin);
 
-                TrajectoriesList.Add(trajectoryToAdd);
-               
                 //Retour
-                trajectoryToAdd.Clear();
-
-                trajectoryToAdd.Add(lacherRondin);
-                trajectoryToAdd.Add(listPoints[currentTrajectory]);
-                trajectoryToAdd.Add(listPoints[0]);
-
-                TrajectoriesList.Add(trajectoryToAdd);
+                
+                TrajectoriesList.Add(listPoints[currentTrajectory]);
+                TrajectoriesList.Add(listPoints[0]);
 
                 //Console.WriteLine("Trajectory " + currentTrajectory + " :" + leverRondin.X + ";" + leverRondin.Y + ";" + leverRondin.Z + " go to " + listPoints[currentTrajectory].X + ";" + listPoints[currentTrajectory].Y + ";" + listPoints[currentTrajectory].Z);
                 //Console.WriteLine("And " + listPoints[currentTrajectory].X + ";" + listPoints[currentTrajectory].Y + ";" + listPoints[currentTrajectory].Z + " go to" + +listPoints[0].X + ";" + listPoints[0].Y + ";" + listPoints[0].Z);
@@ -354,7 +342,7 @@ namespace KukkaMove
             double sinTeta = 0.760487508634168; // sinTeta = System.Math.Cos(45);
             double rX = (Robot.GetCurrentPosition().X + X) * cosTeta - (Robot.GetCurrentPosition().Y + Y) * sinTeta;
             double rY = (Robot.GetCurrentPosition().X + X) * sinTeta + (Robot.GetCurrentPosition().Y + Y) * cosTeta;
-            if ((-200 <= rX) && (rX <= 800) && (130 <= rY) && (rY <= 790) && (Robot.GetCurrentPosition().Z >= 50))
+            if ((-200 <= rX) && (rX <= 950) && (130 <= rY) && (rY <= 790) && (Robot.GetCurrentPosition().Z >= 50))
             {
                 return true;
             }
@@ -362,6 +350,7 @@ namespace KukkaMove
             {
                 //robot s'arrete
                 Console.WriteLine("Le robot va sortir de la zone");
+                Robot.StopRelativeMovement();
                 return false;
             }
         }
