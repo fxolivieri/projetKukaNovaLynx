@@ -188,7 +188,7 @@ namespace KukkaMove
                                         Robot.StopRelativeMovement();
                                         TrajectoriesList = creationPlateau(Trajectoire, 4, 4);
                                         modeEnable = 3;
-                                        if (!Robot.IsGripperOpen()) Robot.OpenGripper();
+                                        //if (!Robot.IsGripperOpen()) Robot.OpenGripper();
 
                                         Robot.PlayTrajectory(TrajectoriesList[0]);
                                         TrajectoriesList.RemoveAt(0);
@@ -245,7 +245,6 @@ namespace KukkaMove
                             {
                                 Robot.OpenGripper();
                             }
-                            Console.WriteLine("Go to"+ TrajectoriesList[whichTrajectory]);
                             Robot.PlayTrajectory(TrajectoriesList[whichTrajectory]);
                             whichTrajectory++;
                         }
@@ -262,6 +261,7 @@ namespace KukkaMove
             List<List<CartesianPosition>> TrajectoriesList = new List<List<CartesianPosition>>();
             List<CartesianPosition> trajectoryToAdd = new List<CartesianPosition>();
             CartesianPosition leverRondin = new CartesianPosition();
+            CartesianPosition lacherRondin = new CartesianPosition();
 
             // Ajout du point où se trouve les rondins
             listPoints.Add(list[0]);
@@ -316,22 +316,32 @@ namespace KukkaMove
             leverRondin.B = list[0].B;
             leverRondin.C = list[0].C;
             Console.WriteLine("\n");
-            for (int i=1; i< listPoints.Count; i++)
+
+            for (int currentTrajectory = 1; currentTrajectory < trajectoryToAdd.Count(); currentTrajectory++)
             {
+                lacherRondin = listPoints[currentTrajectory];
+                lacherRondin.Z = 125.0;
+
                 //Aller
                 trajectoryToAdd.Clear();
-                trajectoryToAdd.Add(leverRondin);
-                trajectoryToAdd.Add(listPoints[i]);
-                TrajectoriesList.Add(trajectoryToAdd);
 
+                trajectoryToAdd.Add(leverRondin);
+                trajectoryToAdd.Add(listPoints[currentTrajectory]);
+                trajectoryToAdd.Add(lacherRondin);
+
+                TrajectoriesList.Add(trajectoryToAdd);
+               
                 //Retour
                 trajectoryToAdd.Clear();
-                trajectoryToAdd.Add(listPoints[i]);
+
+                trajectoryToAdd.Add(lacherRondin);
+                trajectoryToAdd.Add(listPoints[currentTrajectory]);
                 trajectoryToAdd.Add(listPoints[0]);
+
                 TrajectoriesList.Add(trajectoryToAdd);
 
-                Console.WriteLine("Trajectory " + i + " :" + leverRondin.X + ";" + leverRondin.Y + ";" + leverRondin.Z + " go to " + listPoints[i].X + ";" + listPoints[i].Y + ";" + listPoints[i].Z);
-                Console.WriteLine("And " + listPoints[i].X + ";" + listPoints[i].Y + ";" + listPoints[i].Z + " go to" + +listPoints[0].X + ";" + listPoints[0].Y + ";" + listPoints[0].Z);
+                //Console.WriteLine("Trajectory " + currentTrajectory + " :" + leverRondin.X + ";" + leverRondin.Y + ";" + leverRondin.Z + " go to " + listPoints[currentTrajectory].X + ";" + listPoints[currentTrajectory].Y + ";" + listPoints[currentTrajectory].Z);
+                //Console.WriteLine("And " + listPoints[currentTrajectory].X + ";" + listPoints[currentTrajectory].Y + ";" + listPoints[currentTrajectory].Z + " go to" + +listPoints[0].X + ";" + listPoints[0].Y + ";" + listPoints[0].Z);
             }
 
             // Toutes les trajectoire à la suite dans une liste globale

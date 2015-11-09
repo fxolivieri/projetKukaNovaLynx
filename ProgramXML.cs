@@ -21,19 +21,13 @@ namespace KukkaMove
             foreach (XmlNode node in nodes)
             {
                 CartesianPosition currentPoint = new CartesianPosition();
-
-
+                
                 currentPoint.X = Convert.ToDouble(node.SelectSingleNode("X").InnerText);
-
                 currentPoint.Y = Convert.ToDouble(node.SelectSingleNode("Y").InnerText);
-
                 currentPoint.Z = Convert.ToDouble(node.SelectSingleNode("Z").InnerText);
-
-
+                
                 currentPoint.A = Convert.ToDouble(node.SelectSingleNode("A").InnerText);
-
                 currentPoint.B = Convert.ToDouble(node.SelectSingleNode("B").InnerText);
-
                 currentPoint.C = Convert.ToDouble(node.SelectSingleNode("C").InnerText);
 
                 listOfPositions.Add(currentPoint);
